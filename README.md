@@ -58,6 +58,19 @@ Adding lag/rolling features improved both precision and recall at every threshol
 
 At the lower thresholds, the model catches the large majority of real extreme events, at the cost of a high false positive rate. This tradeoff was chosen deliberately: missing a real extreme event is considered more costly than a false alarm, but the false alarm rate is high enough that this would need real improvement before being useful in practice.
 
+## Baseline comparison: Random Forest
+
+To check whether the neural network is actually earning its complexity, a Random Forest (200 trees, `class_weight='balanced'`) was trained on the same features (unscaled, since tree splits don't require normalized inputs).
+
+| Model | Threshold | Precision | Recall | F1 |
+|---|---|---|---|---|
+| Neural net | 0.7 | 0.444 | 0.790 | 0.568 |
+| Random Forest | 0.2 | 0.593 | 0.532 | 0.561 |
+
+Best-case F1 is nearly identical between the two, but the shape of the tradeoff differs a lot. Random Forest is more precise when it commits to a prediction, but far more conservative, its recall tops out around 0.53 even at its loosest threshold, well below what the neural net achieves even at its strictest threshold. Given that missed extreme events are considered more costly than false alarms for this use case, the neural net's ability to reach much higher recall makes it the better fit here, despite Random Forest's cleaner-looking precision.
+
+Random Forest's feature importances also validate the lag/rolling feature engineering: `precipitation_hours` and `cloud_cover_mean` (same-day values) dominate, but `cloud_cover_roll3`, `precip_hours_lag1`, and `cloud_cover_lag1` combined account for roughly 14% of the model's decisions, confirming the engineered buildup features carry real signal rather than noise. Notably, geography (`lat`, `lon`, `elevation_m`) ranked low in importance, most of the signal comes from same-day and recent atmospheric conditions rather than location.
+
 ## Limitations (read this before using this for anything real)
 
 - Predicts extreme precipitation, not floods. Actual flood risk depends on soil saturation, snowmelt timing, terrain/drainage, and river discharge, none of which are in this model.
@@ -68,7 +81,6 @@ At the lower thresholds, the model catches the large majority of real extreme ev
 
 ## Next steps
 
-- Compare against a non-neural baseline (Random Forest / simple percentile rule) to check if the model is actually earning its complexity
 - Add multi-day rolling precipitation sums as features
 - Explore whether nearby-station conditions (e.g. upstream stations) improve prediction
 - Consider terrain/drainage features if a suitable dataset can be found
