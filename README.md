@@ -36,6 +36,30 @@ Several columns were dropped because they were used to build the label, or were 
 
 Final feature set: 25 columns (weather variables, geography, time, plus lag/rolling features below).
 
+## Architecture
+
+```mermaid
+graph TD
+    A[Input Data: ERA5 Daily Weather] --> B[Feature Engineering: Lags/Rolling]
+    B --> C[Dataset Split: 1990-2018 Train, 2019-2024 Test]
+    C --> D[Random Forest Classifier]
+    D --> E[Extreme Precipitation Prediction]
+```
+
+## Visualizations
+
+### Train/Test Split Timeline
+![Train/Test Timeline](figures/timeline.png)
+
+### Confusion Matrix (Random Forest)
+![Confusion Matrix](figures/confusion_matrix.png)
+
+### Precision-Recall Curve
+![Precision-Recall Curve](figures/precision_recall.png)
+
+### Top 10 Feature Importances
+![Feature Importance](figures/feature_importance.png)
+
 ## Methodology
 
 - **Split:** time-based, not random. Train on 1990-2018, test on 2019-2024. Random shuffling would leak adjacent-day information (today's weather is highly correlated with yesterday's), inflating test performance artificially.
