@@ -6,7 +6,7 @@ A binary classifier predicting extreme precipitation days across five Gilgit-Bal
 
 ## Data
 
-- Source: [Karakoram ERA5 Climate Dataset](link-to-your-dataset) (own dataset, published on Kaggle/Zenodo)
+- Source: [Karakoram ERA5 Climate Dataset](https://www.kaggle.com/datasets/arkalibaig/karakoram-era5-climate-dataset) (own dataset, published on Kaggle/Zenodo)
 - 63,920 daily records, 1990-2024, 5 stations: Gilgit, Skardu, Hunza, Chilas, Khunjerab
 - Bias-corrected for a known ERA5 2016 assimilation discontinuity (see dataset repo for details)
 
