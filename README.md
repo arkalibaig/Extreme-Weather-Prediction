@@ -43,7 +43,7 @@ graph TD
     A[Input Data: ERA5 Daily Weather] --> B[Feature Engineering: Lags/Rolling]
     B --> C[Dataset Split: 1990-2018 Train, 2019-2024 Test]
     C --> D[Neural Network Classifier]
-    C --> F[Random Forest Classifier (Baseline)]
+    C --> F["Random Forest Classifier (Baseline)"]
     D --> E[Extreme Precipitation Prediction]
     F --> E
 ```
