@@ -36,6 +36,23 @@ Several columns were dropped because they were used to build the label, or were 
 
 Final feature set: 25 columns (weather variables, geography, time, plus lag/rolling features below).
 
+## Repository Structure
+
+```
+.
+├── extreme-weather-prediction.ipynb
+├── figures/
+│   ├── confusion_matrix.png
+│   ├── feature_importance.png
+│   ├── precision_recall.png
+│   └── timeline.png
+├── generate_plots.py
+├── LICENSE
+├── random_forest.ipynb
+├── README.md
+└── requirements.txt
+```
+
 ## Architecture
 
 ```mermaid
