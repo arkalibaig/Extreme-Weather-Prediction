@@ -42,8 +42,10 @@ Final feature set: 25 columns (weather variables, geography, time, plus lag/roll
 graph TD
     A[Input Data: ERA5 Daily Weather] --> B[Feature Engineering: Lags/Rolling]
     B --> C[Dataset Split: 1990-2018 Train, 2019-2024 Test]
-    C --> D[Random Forest Classifier]
+    C --> D[Neural Network Classifier]
+    C --> F[Random Forest Classifier (Baseline)]
     D --> E[Extreme Precipitation Prediction]
+    F --> E
 ```
 
 ## Visualizations
@@ -68,9 +70,9 @@ graph TD
 - **Model:** small feedforward neural network (64 → 32 → 1, sigmoid output), trained on Kaggle GPU (Tesla T4/P100).
 - **Feature engineering:** added 1-day lag and 3-day rolling averages (precipitation hours, cloud cover, wind speed), calculated per-station to avoid mixing timelines across locations.
 
-## Results
+## Results: Neural Network
 
-Evaluated on held-out 2019-2024 data (587 real extreme days out of 10,960).
+The primary model is a small feedforward neural network, which was trained on Kaggle using GPU acceleration. It was evaluated on held-out 2019-2024 data (587 real extreme days out of 10,960).
 
 | Threshold | Precision | Recall | F1 |
 |---|---|---|---|
@@ -81,6 +83,8 @@ Evaluated on held-out 2019-2024 data (587 real extreme days out of 10,960).
 Adding lag/rolling features improved both precision and recall at every threshold compared to the baseline (single-day snapshot) model, for example at threshold 0.5: recall rose from 0.852 to 0.879, precision from 0.359 to 0.374.
 
 At the lower thresholds, the model catches the large majority of real extreme events, at the cost of a high false positive rate. This tradeoff was chosen deliberately: missing a real extreme event is considered more costly than a false alarm, but the false alarm rate is high enough that this would need real improvement before being useful in practice.
+
+The Neural Network outperformed the Random Forest baseline in terms of recall and overall F1-score optimization for this specific use case.
 
 ## Baseline comparison: Random Forest
 
